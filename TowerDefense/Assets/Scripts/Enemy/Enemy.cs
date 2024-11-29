@@ -15,6 +15,7 @@ public class Enemy : MonoBehaviour
     private NavMeshAgent _agent;
     private Vector3 _target;
     private float _currentHealth;
+    private bool _justSpawned = true;
 
     private void OnEnable()
     {
@@ -26,21 +27,34 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        _agent.SetDestination(_target);
+        if (_justSpawned)
+        {
+            _agent.SetDestination(_target);
+            _justSpawned = false;
+        }
         slider.value = _currentHealth;
 
         if (CheckIfFinished())
         {
+            EventBus.Publish("OnEnemyReachedEnd");
             Instantiate(moneyUI, transform.position, Quaternion.identity);
             DestroyEnemy();
         }
     }
     
+    /// <summary>
+    /// Sets the target for the gameObject.
+    /// </summary>
+    /// <param name="targetPoint">Point that will be the new object's target.</param>
     public void SetTarget(Vector3 targetPoint)
     {
         _target = targetPoint;
     }
 
+    /// <summary>
+    /// Deducts a specific amount from the _currentHealth.
+    /// </summary>
+    /// <param name="damage"> The amount that will be deducted.</param>
     public void DamageEnemy(float damage)
     {
         _currentHealth -= damage;
@@ -52,11 +66,18 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Checks if the gameObject reached the target position.
+    /// </summary>
+    /// <returns>True if the gameObject reached the target, false if not.</returns>
     private bool CheckIfFinished()
     {
         return Math.Abs(transform.position.x - _target.x) < 0.01f && Math.Abs(transform.position.z - _target.z) < 0.01f;
     }
 
+    /// <summary>
+    /// Destroys the enemy object.
+    /// </summary>
     private void DestroyEnemy()
     {
         Destroy(gameObject);
