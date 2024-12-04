@@ -37,7 +37,6 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Remove one life.
     /// </summary>
-    /// <exception cref="NotImplementedException"></exception>
     private void LoseLife()
     {
         if (lives > 0)

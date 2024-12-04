@@ -705,7 +705,7 @@ GameObject:
   - component: {fileID: 765068923}
   - component: {fileID: 765068924}
   m_Layer: 0
-  m_Name: InputManager
+  m_Name: Input Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1559,8 +1559,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1971808544}
+  - component: {fileID: 1971808545}
   m_Layer: 0
-  m_Name: TowerPlacer
+  m_Name: Tower Placer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1581,6 +1582,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1971808545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1971808543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 383b09281109c4350b4ddfcdffd41a0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tower: {fileID: 6569105728087865381, guid: 3a74995024f1a471d909db00dde14b72, type: 3}
 --- !u!1001 &1989226885
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1638,28 +1652,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 22eab87d45c294b36b914d1b737d9919, type: 3}
---- !u!64 &6197471891068060067
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6804356944568409761}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -8219792198135971782, guid: 6f768b400b9164927be5d3ff1747184e, type: 3}
 --- !u!1001 &6804356944568409760
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1719,16 +1711,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3866234555366526660, guid: 0bbade0492074444a8e2e8512dfedfb7, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6197471891068060067}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bbade0492074444a8e2e8512dfedfb7, type: 3}
---- !u!1 &6804356944568409761 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3866234555366526660, guid: 0bbade0492074444a8e2e8512dfedfb7, type: 3}
-  m_PrefabInstance: {fileID: 6804356944568409760}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
