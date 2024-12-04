@@ -57,6 +57,7 @@ public class Enemy : MonoBehaviour
     /// <param name="damage"> The amount that will be deducted.</param>
     public void DamageEnemy(float damage)
     {
+        Debug.Log($"Enemy taking {damage} points of damage");
         _currentHealth -= damage;
         if (_currentHealth <= 0)
         {

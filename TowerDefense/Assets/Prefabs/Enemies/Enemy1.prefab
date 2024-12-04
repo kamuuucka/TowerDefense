@@ -1,5 +1,60 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &439003586186090060
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8693353447486256672}
+  - component: {fileID: 6709533290669846039}
+  m_Layer: 0
+  m_Name: Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8693353447486256672
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439003586186090060}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5487170248858512322}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &6709533290669846039
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439003586186090060}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.16
+  m_Height: 0.3
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.3, z: 0}
 --- !u!1001 &1406012704557464114
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8,6 +63,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3153907178616771806, guid: 8212147d7a0ad4d578beb4fc6f9d74fb, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3363106188320472259, guid: 8212147d7a0ad4d578beb4fc6f9d74fb, type: 3}
       propertyPath: money
       value: 10
@@ -65,11 +124,15 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6920975624873665039, guid: 8212147d7a0ad4d578beb4fc6f9d74fb, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 6892039453797831152, guid: 8212147d7a0ad4d578beb4fc6f9d74fb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4510332338139175023}
+    - targetCorrespondingSourceObject: {fileID: 6892039453797831152, guid: 8212147d7a0ad4d578beb4fc6f9d74fb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8693353447486256672}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8212147d7a0ad4d578beb4fc6f9d74fb, type: 3}
 --- !u!4 &5487170248858512322 stripped

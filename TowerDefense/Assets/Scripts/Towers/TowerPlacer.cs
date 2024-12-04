@@ -19,7 +19,6 @@ public class TowerPlacer : MonoBehaviour
 
     private void SpawnTower(Transform parent)
     {
-        Debug.Log("I am trying");
         GameObject newTower = Instantiate(tower, parent.position, Quaternion.identity);
         newTower.transform.SetParent(parent);
     }
