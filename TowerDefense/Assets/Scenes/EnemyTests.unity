@@ -521,6 +521,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tower Placer
       objectReference: {fileID: 0}
+    - target: {fileID: 4330004794801552767, guid: 80ab10ea2171f4098bef6bfe3d2f9879, type: 3}
+      propertyPath: tower
+      value: 
+      objectReference: {fileID: 2267909312293661381, guid: fecbeef02dabe4d09a8dd8d83ec614a4, type: 3}
     - target: {fileID: 9216387127998165686, guid: 80ab10ea2171f4098bef6bfe3d2f9879, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2359,6 +2363,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1665009666868230611, guid: e81c60174a0d14ba695ec6789fc13aa3, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3211069450298904359, guid: e81c60174a0d14ba695ec6789fc13aa3, type: 3}
+      propertyPath: delayBetweenEnemies
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3260494815913811621, guid: e81c60174a0d14ba695ec6789fc13aa3, type: 3}
       propertyPath: m_Name
       value: Spawner

@@ -9,13 +9,16 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private float speed = 1f;
     [SerializeField] private float health;
-    [SerializeField] private float money;
+    [SerializeField] private int money;
     [SerializeField] private GameObject moneyUI;
     [SerializeField] private Slider slider;
     private NavMeshAgent _agent;
     private Vector3 _target;
     private float _currentHealth;
     private bool _justSpawned = true;
+    private bool _slowedDown;
+
+    public int Money => money;
 
     private void OnEnable()
     {
@@ -57,7 +60,6 @@ public class Enemy : MonoBehaviour
     /// <param name="damage"> The amount that will be deducted.</param>
     public void DamageEnemy(float damage)
     {
-        Debug.Log($"Enemy taking {damage} points of damage");
         _currentHealth -= damage;
         if (_currentHealth <= 0)
         {
@@ -65,6 +67,20 @@ public class Enemy : MonoBehaviour
             Instantiate(moneyUI, transform.position, Quaternion.identity);
             DestroyEnemy();
         }
+    }
+
+    public void SlowDownEnemy(float slowDown)
+    {
+        if (_slowedDown) return;
+        _slowedDown = true;
+        _agent.speed *= slowDown;
+    }
+
+    public void RestoreOriginalSpeed()
+    {
+        if (!_slowedDown) return;
+        _slowedDown = false;
+        _agent.speed = speed;
     }
 
     /// <summary>
@@ -81,6 +97,7 @@ public class Enemy : MonoBehaviour
     /// </summary>
     private void DestroyEnemy()
     {
+        EventBus.Publish("EnemyDeath", this);
         Destroy(gameObject);
     }
 }

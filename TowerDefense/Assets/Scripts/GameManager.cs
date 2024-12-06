@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private Transform endPoint;
     [SerializeField] private int lives;
+    [SerializeField] private int money;
 
     private void OnEnable()
     {
@@ -15,14 +16,16 @@ public class GameManager : MonoBehaviour
         //be called with the spawned enemy as an argument.
         EventBus.Subscribe<Enemy>("OnEnemySpawned", AssignPathEndPoint);
         EventBus.Subscribe("OnEnemyReachedEnd", LoseLife);
+        EventBus.Subscribe<Enemy>("EnemyDeath", OnEnemyDeath);
     }
-
+    
     private void OnDisable()
     {
         //Unsubscribes the AssignPathEndPoint method from the event called "OnEnemySpawned".
         //Prevents memory leaks.
         EventBus.Unsubscribe<Enemy>("OnEnemySpawned", AssignPathEndPoint);
         EventBus.Unsubscribe("OnEnemyReachedEnd", LoseLife);
+        EventBus.Unsubscribe<Enemy>("EnemyDeath", OnEnemyDeath);
     }
      
     /// <summary>
@@ -49,5 +52,10 @@ public class GameManager : MonoBehaviour
             lives = 0;
             Debug.Log("Game over");
         }
+    }
+    
+    private void OnEnemyDeath(Enemy enemy)
+    {
+        money += enemy.Money;
     }
 }

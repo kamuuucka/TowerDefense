@@ -5,7 +5,8 @@ using UnityEngine;
 public interface ITowers
 {
     public int Cost { get; }
-    public int Damage { get; }
+    public float Damage { get; }
     public void Attack(Enemy enemy);
+    public void StopAttack(Enemy enemy);
     public void Upgrade();
 }
