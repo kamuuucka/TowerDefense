@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
         EventBus.Subscribe<Enemy>("OnEnemySpawned", AssignPathEndPoint);
         EventBus.Subscribe("OnEnemyReachedEnd", LoseLife);
         EventBus.Subscribe<Enemy>("EnemyDeath", OnEnemyDeath);
+        EventBus.Publish("OnLivesChanged", lives);
+        EventBus.Publish("OnMoneyChanged", money);
     }
     
     private void OnDisable()
