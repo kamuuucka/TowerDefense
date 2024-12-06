@@ -42,20 +42,26 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void LoseLife()
     {
-        if (lives > 0)
+        switch (lives)
         {
-            lives--;
+            case > 0:
+                lives--;
+                break;
+            case <= 0:
+                lives = 0;
+                break;
         }
 
-        if (lives <= 0)
-        {
-            lives = 0;
-            Debug.Log("Game over");
-        }
+        EventBus.Publish("OnLivesChanged", lives);
     }
     
+    /// <summary>
+    /// Add money when an enemy dies.
+    /// </summary>
+    /// <param name="enemy">Enemy that the money is taken from.</param>
     private void OnEnemyDeath(Enemy enemy)
     {
         money += enemy.Money;
+        EventBus.Publish("OnMoneyChanged", money);
     }
 }
