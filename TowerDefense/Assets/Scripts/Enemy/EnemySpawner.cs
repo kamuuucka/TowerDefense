@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,16 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private int amountOfEnemies;
     [SerializeField] private float delayBetweenEnemies;
 
+    private void OnEnable()
+    {
+        EventBus.Subscribe("StartEnemySpawner", SpawnEnemy);
+    }
+
+    private void OnDisable()
+    {
+        EventBus.Unsubscribe("StartEnemySpawner", SpawnEnemy);
+    }
+    
     /// <summary>
     /// Spawns the enemy with the help of coroutine.
     /// </summary>

@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -6,26 +7,43 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Text lives;
     [SerializeField] private TMP_Text money;
     [SerializeField] private TMP_Text time;
+    [SerializeField] private TMP_Text waves;
     private void OnEnable()
     {
         EventBus.Subscribe<int>("OnLivesChanged", UpdateLives);
         EventBus.Subscribe<int>("OnMoneyChanged", UpdateMoney);
+        EventBus.Subscribe<int>("OnTimeChanged", UpdateTime);
+        EventBus.Subscribe<int>("WavePassed", UpdateWaves);
     }
 
     private void OnDisable()
     {
         EventBus.Unsubscribe<int>("OnLivesChanged", UpdateLives);
         EventBus.Unsubscribe<int>("OnMoneyChanged", UpdateMoney);
+        EventBus.Unsubscribe<int>("OnTimeChanged", UpdateTime);
+        EventBus.Unsubscribe<int>("WavePassed", UpdateWaves);
     }
 
-    private void UpdateTime(float amount)
+    private void Start()
     {
-        int minutes = Mathf.FloorToInt(amount / 60F);
-        int seconds = Mathf.FloorToInt(amount - minutes * 60);
+        UpdateWaves(GameManager.Instance.Waves);
+        UpdateMoney(GameManager.Instance.Money);
+        UpdateLives(GameManager.Instance.Lives);
+    }
+
+    private void UpdateWaves(int waveNumber)
+    {
+        waves.text = $"Waves left: {waveNumber}";
+    }
+
+    private void UpdateTime(int amount)
+    {
+        int minutes = amount / 60;
+        int seconds = amount - minutes * 60;
 
         string niceTime = $"{minutes:0}:{seconds:00}";
 
-        time.text = niceTime;
+        time.text = $"Time left: {niceTime}";
     }
 
     private void UpdateMoney(int amount)

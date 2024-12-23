@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,9 +11,26 @@ public class InputManager : MonoBehaviour
     private Ray _ray;
     private RaycastHit _hit;
     private GameObject _pointer;
+    private bool _isBuildMode;
+
+    private void OnEnable()
+    {
+        EventBus.Subscribe<bool>("ModeSwitch", OnModeSwitch);
+    }
+    
+    private void OnDisable()
+    {
+        EventBus.Unsubscribe<bool>("ModeSwitch", OnModeSwitch);
+    }
+    
+    private void OnModeSwitch(bool isBuild)
+    {
+        _isBuildMode = isBuild;
+    }
 
     void Update()
     {
+        if (!_isBuildMode) return;
         _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if(Physics.Raycast(_ray, out _hit))
         {
@@ -33,9 +51,11 @@ public class InputManager : MonoBehaviour
                 }
             }
             
-        } else if (_pointer != null)
+        } 
+        else if (_pointer != null)
         {
             Destroy(_pointer.gameObject);
         }
+
     }
 }
