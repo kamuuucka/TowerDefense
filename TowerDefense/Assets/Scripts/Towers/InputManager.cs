@@ -11,7 +11,7 @@ public class InputManager : MonoBehaviour
     private Ray _ray;
     private RaycastHit _hit;
     private GameObject _pointer;
-    private bool _isBuildMode;
+    private bool _isBuildMode = true;
 
     private void OnEnable()
     {
@@ -30,7 +30,13 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
-        if (!_isBuildMode) return;
+        //TODO: When the tower is placed, can't place around them.
+        //TODO: Player can buy few towers at once. Make them click the button every time.
+        if (!_isBuildMode)
+        {
+            if (_pointer != null) Destroy(_pointer.gameObject);
+            return;
+        }
         _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if(Physics.Raycast(_ray, out _hit))
         {

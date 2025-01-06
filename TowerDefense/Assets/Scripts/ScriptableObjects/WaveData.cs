@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Wave Data", menuName = "ScriptableObjects/CreateWaveData", order = 2)]
 public class WaveData : ScriptableObject
 {
-    [SerializeField] private int enemyAmount;
-    [SerializeField] private int delayBetweenEnemies;
+    [SerializeField] public int enemyAmount;
+    [SerializeField] public int delayBetweenEnemies;
     
 }

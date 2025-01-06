@@ -7,6 +7,7 @@ public class DebuffTower : BaseTower
     private Coroutine _attackCoroutine;
     private void OnEnable()
     {
+        towerType = TowerType.DebuffTower;
         EventBus.Subscribe<Enemy>("EnemyDeath", OnEnemyDeath);
         _attackCoroutine = StartCoroutine(AttackLoop());
     }

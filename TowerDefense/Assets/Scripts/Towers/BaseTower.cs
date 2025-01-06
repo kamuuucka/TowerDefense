@@ -12,6 +12,15 @@ public abstract class BaseTower : MonoBehaviour, ITowers
     [SerializeField] private List<Enemy> enemiesInRange;
     private BoxCollider _collider;
     private bool _isAttacking;
+    
+    public enum TowerType
+    {
+        SingleAttack,
+        AreaOfDamage,
+        DebuffTower
+    }
+    
+    [HideInInspector] public TowerType towerType;
 
     public int Cost => cost;
     public float Damage => damage;

@@ -7,9 +7,9 @@ public class SingleAttackTower : BaseTower
 {
     private Coroutine _attackCoroutine;
     
-    
     private void OnEnable()
     {
+        towerType = TowerType.SingleAttack;
         EventBus.Subscribe<Enemy>("EnemyDeath", StopAttacking);
     }
 
@@ -59,7 +59,7 @@ public class SingleAttackTower : BaseTower
     {
         while (true)
         {
-            enemy.DamageEnemy(Damage); // Call the attack method
+            if (enemy != null) enemy.DamageEnemy(Damage); // Call the attack method
             yield return new WaitForSeconds(AttackInterval); // Wait before the next attack
         }
     }

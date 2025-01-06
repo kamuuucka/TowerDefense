@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,8 +18,10 @@ public class GameManager : MonoBehaviour
     private int _roundTime;
     private int _currentTime;
     private int _wave;
-    private bool _isBuild;
     private Coroutine _timerCoroutine;
+    private int _enemiesToKill;
+
+    private WaveData _activeWave;
 
     public int Lives => _lives;
     public int Money => _money;
@@ -41,9 +44,8 @@ public class GameManager : MonoBehaviour
         _money = data.GetMoney();
         _buildTime = data.GetBuildTime();
         _roundTime = data.GetRoundTime();
-        _wave = data.GetWaves();
-
-        _isBuild = true;
+        _activeWave = data.GetWaves()[_wave];
+        _enemiesToKill = _activeWave.enemyAmount;
     }
 
     private void OnEnable()
@@ -55,7 +57,7 @@ public class GameManager : MonoBehaviour
         EventBus.Subscribe("OnEnemyReachedEnd", LoseLife);
         EventBus.Subscribe<Enemy>("EnemyDeath", OnEnemyDeath);
         EventBus.Subscribe<bool>("GameModeSwitch", OnGameModeSwitched);
-
+        
         StartTimer(_buildTime);
     }
     
@@ -71,6 +73,7 @@ public class GameManager : MonoBehaviour
 
     private void StartTimer(int time)
     {
+        //TODO: No need for the wave timer. Just run until all enemies are dead.
         // Stop any running timer before starting a new one
         if (_timerCoroutine != null)
         {
@@ -91,9 +94,8 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(1);
             _currentTime--;
         }
-
-        _isBuild = !_isBuild;
-        OnGameModeSwitched(_isBuild);
+        EventBus.Publish("OnTimeChanged", 0);
+        OnGameModeSwitched(false);
 
     }
     
@@ -103,16 +105,24 @@ public class GameManager : MonoBehaviour
         {
             onBuildOn?.Invoke();
             EventBus.Publish("ModeSwitch", true);
-            _wave--;
-            EventBus.Publish("WavePassed", _wave);
-            StartTimer(_buildTime);
+            _wave++;
+            if (_wave == data.GetWaves().Count)
+            {
+                SceneManager.LoadScene("GameOver");
+            }
+            else
+            {
+                _activeWave = data.GetWaves()[_wave];
+                _enemiesToKill = _activeWave.enemyAmount;
+                EventBus.Publish("WavePassed", _wave);
+                StartTimer(_buildTime);
+            }
         }
         else
         {
             onBuildOff?.Invoke();
             EventBus.Publish("ModeSwitch", false);
-            EventBus.Publish("StartEnemySpawner");
-            StartTimer(_roundTime);
+            EventBus.Publish("StartEnemySpawner", _activeWave);
         }
     }
 
@@ -130,13 +140,13 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void LoseLife()
     {
-        switch (data.GetLives())
+        switch (_lives)
         {
             case > 0:
                 _lives--;
                 break;
-            case <= 0:
-                _lives = 0;
+            case 0:
+                SceneManager.LoadScene("GameOver");
                 break;
         }
 
@@ -151,5 +161,11 @@ public class GameManager : MonoBehaviour
     {
         _money += enemy.Money;
         EventBus.Publish("OnMoneyChanged", _money);
+        _enemiesToKill--;
+
+        if (_enemiesToKill <= 0)
+        {
+            OnGameModeSwitched(true);
+        }
     }
 }

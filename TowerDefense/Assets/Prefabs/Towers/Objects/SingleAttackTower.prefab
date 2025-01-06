@@ -49,8 +49,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cost: 50
   damage: 5
-  isDebug: 1
+  isDebug: 0
   attackInterval: 1.5
+  enemiesInRange: []
 --- !u!65 &6950072983013525944
 BoxCollider:
   m_ObjectHideFlags: 0

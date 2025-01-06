@@ -52,6 +52,7 @@ MonoBehaviour:
   isDebug: 0
   attackInterval: 2
   enemiesInRange: []
+  towerType: 1
 --- !u!65 &8847749659725291826
 BoxCollider:
   m_ObjectHideFlags: 0

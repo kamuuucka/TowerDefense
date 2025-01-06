@@ -6,38 +6,35 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private Enemy enemyPrefab;
-    [SerializeField] private int amountOfEnemies;
-    [SerializeField] private float delayBetweenEnemies;
 
     private void OnEnable()
     {
-        EventBus.Subscribe("StartEnemySpawner", SpawnEnemy);
+        EventBus.Subscribe<WaveData>("StartEnemySpawner", StartSpawningEnemies);
     }
 
     private void OnDisable()
     {
-        EventBus.Unsubscribe("StartEnemySpawner", SpawnEnemy);
+        EventBus.Unsubscribe<WaveData>("StartEnemySpawner", StartSpawningEnemies);
     }
-    
+
     /// <summary>
     /// Spawns the enemy with the help of coroutine.
     /// </summary>
-    public void SpawnEnemy()
+    public void StartSpawningEnemies(WaveData data)
     {
-        StartCoroutine(SpawnEnemiesCoroutine());
+        StartCoroutine(SpawnEnemiesCoroutine(data.enemyAmount, data.delayBetweenEnemies));
     }
 
     /// <summary>
     /// Spawns the specified number of enemies with a delay between the spawns.
     /// </summary>
     /// <returns></returns>
-    private IEnumerator SpawnEnemiesCoroutine()
+    private IEnumerator SpawnEnemiesCoroutine(int amountOfEnemies, float delayBetweenEnemies)
     {
         for (var i = 0; i < amountOfEnemies; i++)
         {
             var enemy = Instantiate(enemyPrefab, gameObject.transform);
             
-            //Publish the "OnEnemySpawned" when the enemy is spawned.
             EventBus.Publish("OnEnemySpawned", enemy);
             yield return new WaitForSeconds(delayBetweenEnemies);
         }

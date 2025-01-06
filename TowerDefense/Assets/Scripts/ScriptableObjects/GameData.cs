@@ -33,8 +33,8 @@ public class GameData : ScriptableObject
         return _money;
     }
 
-    public int GetWaves()
+    public List<WaveData> GetWaves()
     {
-        return _waves.Count;
+        return _waves;
     }
 }

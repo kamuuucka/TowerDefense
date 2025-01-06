@@ -33,7 +33,7 @@ public class UIManager : MonoBehaviour
 
     private void UpdateWaves(int waveNumber)
     {
-        waves.text = $"Waves left: {waveNumber}";
+        waves.text = $"Wave: {waveNumber + 1}";
     }
 
     private void UpdateTime(int amount)

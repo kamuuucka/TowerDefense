@@ -40,7 +40,6 @@ public class Enemy : MonoBehaviour
         if (CheckIfFinished())
         {
             EventBus.Publish("OnEnemyReachedEnd");
-            Instantiate(moneyUI, transform.position, Quaternion.identity);
             DestroyEnemy();
         }
     }
@@ -61,7 +60,7 @@ public class Enemy : MonoBehaviour
     public void DamageEnemy(float damage)
     {
         _currentHealth -= damage;
-        if (_currentHealth <= 0)
+        if (_currentHealth <= 0 && transform != null)
         {
             _currentHealth = 0;
             Instantiate(moneyUI, transform.position, Quaternion.identity);

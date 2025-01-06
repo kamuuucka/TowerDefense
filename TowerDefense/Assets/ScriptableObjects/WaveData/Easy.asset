@@ -9,14 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e0529d56f1c845a0a5e9ab3c1cd80b6, type: 3}
+  m_Script: {fileID: 11500000, guid: 40f65e7873d9f46a48035a40b149187e, type: 3}
   m_Name: Easy
   m_EditorClassIdentifier: 
-  roundTimeMinutes: 0
-  roundTimeSeconds: 5
-  buildTimeMinutes: 0
-  buildTimeSeconds: 20
-  _lives: 5
-  _money: 200
-  _waves:
-  - {fileID: 11400000, guid: dc705323ac5708849b7d58961422df3e, type: 2}
+  enemyAmount: 5
+  delayBetweenEnemies: 1

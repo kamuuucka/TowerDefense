@@ -8,6 +8,7 @@ public class AreaOfDamageTower : BaseTower
     private Coroutine _attackCoroutine;
     private void OnEnable()
     {
+        towerType = TowerType.AreaOfDamage;
         EventBus.Subscribe<Enemy>("EnemyDeath", OnEnemyDeath);
         _attackCoroutine = StartCoroutine(AttackLoop());
     }
