@@ -3637,7 +3637,7 @@ PrefabInstance:
     - target: {fileID: 4330004794801552767, guid: 80ab10ea2171f4098bef6bfe3d2f9879, type: 3}
       propertyPath: tower
       value: 
-      objectReference: {fileID: 5060727125735442303, guid: 281bf1ca0b4134d6b99dbe2cedd4583b, type: 3}
+      objectReference: {fileID: 3921659829892832197, guid: a17dd22f33cb541e4ac34651a52d9438, type: 3}
     - target: {fileID: 4330004794801552767, guid: 80ab10ea2171f4098bef6bfe3d2f9879, type: 3}
       propertyPath: towerUpgraded
       value: 

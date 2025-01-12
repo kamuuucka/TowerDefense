@@ -6,7 +6,7 @@ public class AreaOfDamageVisual : MonoBehaviour
 
     public void AssignDuration(float value)
     {
-        _duration = value - value/2;
+        _duration = value* 0.8f;
     }
     
     private void Start()
