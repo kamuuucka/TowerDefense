@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2126555687155716508}
   - component: {fileID: 8517139884536444806}
   - component: {fileID: 7873668357158224802}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 1264665916676013229}
   - component: {fileID: 8670453923509219268}
   - component: {fileID: 4514202580888607033}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -247,7 +247,7 @@ GameObject:
   - component: {fileID: 8275767364150256718}
   - component: {fileID: 6950072983013525944}
   - component: {fileID: 1716127279455686266}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SingleAttackTower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -348,7 +348,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6538210799135093938}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -382,7 +382,7 @@ GameObject:
   - component: {fileID: 1827551798938185591}
   - component: {fileID: 405605921069348463}
   - component: {fileID: 6027213687462315646}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -556,6 +556,10 @@ PrefabInstance:
     - target: {fileID: 6569105728087865381, guid: 3a74995024f1a471d909db00dde14b72, type: 3}
       propertyPath: m_Name
       value: tower-round-build-a
+      objectReference: {fileID: 0}
+    - target: {fileID: 6569105728087865381, guid: 3a74995024f1a471d909db00dde14b72, type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
