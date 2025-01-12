@@ -9,11 +9,19 @@ public abstract class BaseTower : MonoBehaviour, ITowers
     [SerializeField] private float damage;
     [SerializeField] private bool isDebug;
     [SerializeField] private float attackInterval = 1;
+    //TODO: Hide this, no need to see it
     [SerializeField] private List<Enemy> enemiesInRange;
+    
+    [Header("UPGRADING SYSTEM")]
+    [SerializeField] private int upgradeCost;
+    [SerializeField] private float damageUpgrade;
+    [SerializeField] private float intervalUpgrade;
+
     private BoxCollider _collider;
     private bool _isAttacking;
 
     public int Cost => cost;
+    public int UpgradeCost => upgradeCost;
     public float Damage => damage;
 
     public bool IsAttacking => _isAttacking;
@@ -43,8 +51,16 @@ public abstract class BaseTower : MonoBehaviour, ITowers
     public virtual void Upgrade()
     {
         if (isDebug) Debug.Log($"{gameObject.name} is being upgraded!");
+        damage += damageUpgrade;
+        attackInterval += intervalUpgrade;
     }
-    
+
+    public void UpgradeTower()
+    {
+        Upgrade();
+        EventBus.Publish("TowerUpgraded", gameObject);
+    }
+
     public virtual void OnTriggerEnter(Collider other)
     {
         Enemy enemy = other.GetComponentInParent<Enemy>();

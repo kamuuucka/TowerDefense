@@ -58,4 +58,9 @@ public class InputManager : MonoBehaviour
         }
 
     }
+
+    public void UpgradeTower(GameObject obj)
+    {
+        EventBus.Publish("TowerUpgraded", obj);
+    }
 }
