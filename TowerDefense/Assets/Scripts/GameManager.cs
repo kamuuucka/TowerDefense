@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviour
 
         while (_currentTime > 0)
         {
-            Debug.Log($"Time Left: {_currentTime}");
+            //Debug.Log($"Time Left: {_currentTime}");
             EventBus.Publish("OnTimeChanged", _currentTime);
             yield return new WaitForSeconds(1);
             _currentTime--;

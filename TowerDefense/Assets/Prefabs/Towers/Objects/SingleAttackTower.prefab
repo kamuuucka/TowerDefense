@@ -287,6 +287,7 @@ MonoBehaviour:
   damage: 5
   isDebug: 1
   attackInterval: 1.5
+  projectile: {fileID: 4216664730222149855, guid: 70cb89047a0564a3da1f19ecd358b1c1, type: 3}
   enemiesInRange: []
   upgradeCost: 0
   damageUpgrade: 0

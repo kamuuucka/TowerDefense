@@ -50,7 +50,8 @@ MonoBehaviour:
   cost: 100
   damage: 10
   isDebug: 0
-  attackInterval: 2
+  attackInterval: 4
+  projectile: {fileID: 3384427564046218669, guid: 5530b6ee80ba34fa38a2a173ff568105, type: 3}
   enemiesInRange: []
   upgradeCost: 0
   damageUpgrade: 0

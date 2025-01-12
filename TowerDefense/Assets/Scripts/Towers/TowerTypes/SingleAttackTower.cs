@@ -59,7 +59,8 @@ public class SingleAttackTower : BaseTower
     {
         while (true)
         {
-            enemy.DamageEnemy(Damage); // Call the attack method
+            //enemy.DamageEnemy(Damage); // Call the attack method
+            base.CreateProjectile(enemy.transform);
             yield return new WaitForSeconds(AttackInterval); // Wait before the next attack
         }
     }

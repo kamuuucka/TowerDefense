@@ -1,11 +1,10 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AreaOfDamageTower : BaseTower
 {
     private Coroutine _attackCoroutine;
+    private GameObject _aodVisual;
     private void OnEnable()
     {
         EventBus.Subscribe<Enemy>("EnemyDeath", OnEnemyDeath);
@@ -20,6 +19,7 @@ public class AreaOfDamageTower : BaseTower
 
     public override void Attack(Enemy enemy)
     {
+        base.Attack(enemy);
         enemy.DamageEnemy(Damage); // Damage all enemies in range
     }
     
@@ -32,12 +32,17 @@ public class AreaOfDamageTower : BaseTower
     {
         while (true)
         {
+            if (_aodVisual == null)
+            {
+                _aodVisual = TriggerAoDAttack(transform.position);
+                Debug.Log($"After assigning {_aodVisual}");
+            }
             if (EnemiesInRange.Count > 0)
             {
                 for (int i = EnemiesInRange.Count - 1; i >= 0; i--)
                 {
                     var enemy = EnemiesInRange[i];
-                    if (enemy != null)
+                    if (enemy != null && _aodVisual != null)
                     {
                         Attack(enemy);
                     }

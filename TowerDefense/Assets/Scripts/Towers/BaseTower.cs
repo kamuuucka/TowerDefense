@@ -9,6 +9,8 @@ public abstract class BaseTower : MonoBehaviour, ITowers
     [SerializeField] private float damage;
     [SerializeField] private bool isDebug;
     [SerializeField] private float attackInterval = 1;
+    [SerializeField] private GameObject projectile;
+    
     //TODO: Hide this, no need to see it
     [SerializeField] private List<Enemy> enemiesInRange;
     
@@ -53,6 +55,34 @@ public abstract class BaseTower : MonoBehaviour, ITowers
         if (isDebug) Debug.Log($"{gameObject.name} is being upgraded!");
         damage += damageUpgrade;
         attackInterval += intervalUpgrade;
+    }
+
+    public virtual void CreateProjectile(Transform target)
+    {
+        if (projectile != null && target != null)
+        {
+            GameObject spawnedProjectile = Instantiate(projectile, transform.position, Quaternion.identity);
+            Projectile proj = spawnedProjectile.GetComponent<Projectile>();
+
+            if (proj != null)
+            {
+                proj.Initialize(target, 5f, damage); // Example: speed = 10, use the tower's damage
+            }
+        }
+    }
+    
+    public GameObject TriggerAoDAttack(Vector3 position)
+    {
+        if (projectile == null) return null;
+        
+        GameObject aodInstance = Instantiate(projectile, position, Quaternion.identity);
+        AreaOfDamageVisual aodVisual = aodInstance.GetComponent<AreaOfDamageVisual>();
+        if (aodVisual != null)
+        {
+            aodVisual.AssignDuration(attackInterval); // Use the attack interval as the duration
+        }
+
+        return aodInstance;
     }
 
     public void UpgradeTower()
