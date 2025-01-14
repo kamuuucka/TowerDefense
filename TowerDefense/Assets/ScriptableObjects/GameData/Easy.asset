@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Easy
   m_EditorClassIdentifier: 
   roundTimeMinutes: 0
-  roundTimeSeconds: 5
+  roundTimeSeconds: 20
   buildTimeMinutes: 0
-  buildTimeSeconds: 20
+  buildTimeSeconds: 5
   _lives: 5
   _money: 200
   _waves:
+  - {fileID: 11400000, guid: dc705323ac5708849b7d58961422df3e, type: 2}
   - {fileID: 11400000, guid: dc705323ac5708849b7d58961422df3e, type: 2}
