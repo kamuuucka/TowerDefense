@@ -73,8 +73,6 @@ public class GameManager : MonoBehaviour
 
     private void StartTimer(int time)
     {
-        //TODO: No need for the wave timer. Just run until all enemies are dead.
-        // Stop any running timer before starting a new one
         if (_timerCoroutine != null)
         {
             StopCoroutine(_timerCoroutine);
@@ -89,7 +87,7 @@ public class GameManager : MonoBehaviour
 
         while (_currentTime > 0)
         {
-            Debug.Log($"Time Left: {_currentTime}");
+            //Debug.Log($"Time Left: {_currentTime}");
             EventBus.Publish("OnTimeChanged", _currentTime);
             yield return new WaitForSeconds(1);
             _currentTime--;

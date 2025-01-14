@@ -9,7 +9,6 @@ public class SingleAttackTower : BaseTower
     
     private void OnEnable()
     {
-        towerType = TowerType.SingleAttack;
         EventBus.Subscribe<Enemy>("EnemyDeath", StopAttacking);
     }
 
@@ -34,7 +33,7 @@ public class SingleAttackTower : BaseTower
     
     private void StartAttacking(Enemy enemy)
     {
-        if (_attackCoroutine == null)
+        if (_attackCoroutine == null && enemy !=null)
         {
             _attackCoroutine = StartCoroutine(AttackLoop(enemy));
         }
@@ -59,8 +58,8 @@ public class SingleAttackTower : BaseTower
     {
         while (true)
         {
-            if (enemy != null) enemy.DamageEnemy(Damage); // Call the attack method
-            yield return new WaitForSeconds(AttackInterval); // Wait before the next attack
+            base.CreateProjectile(enemy.transform);
+            yield return new WaitForSeconds(AttackInterval);
         }
     }
 }

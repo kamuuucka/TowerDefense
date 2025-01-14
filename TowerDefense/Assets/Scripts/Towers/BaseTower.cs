@@ -9,8 +9,15 @@ public abstract class BaseTower : MonoBehaviour, ITowers
     [SerializeField] private float damage;
     [SerializeField] private bool isDebug;
     [SerializeField] private float attackInterval = 1;
-    [SerializeField] private List<Enemy> enemiesInRange;
+    [SerializeField] private GameObject projectile;
+    
+    [Header("UPGRADING SYSTEM")]
+    [SerializeField] private int upgradeCost;
+    [SerializeField] private float damageUpgrade;
+    [SerializeField] private float intervalUpgrade;
+
     private BoxCollider _collider;
+    private readonly List<Enemy> _enemiesInRange = new ();
     private bool _isAttacking;
     
     public enum TowerType
@@ -20,14 +27,15 @@ public abstract class BaseTower : MonoBehaviour, ITowers
         DebuffTower
     }
     
-    [HideInInspector] public TowerType towerType;
+    public TowerType towerType;
 
     public int Cost => cost;
+    public int UpgradeCost => upgradeCost;
     public float Damage => damage;
 
     public bool IsAttacking => _isAttacking;
 
-    public List<Enemy> EnemiesInRange => enemiesInRange;
+    public List<Enemy> EnemiesInRange => _enemiesInRange;
 
     public float AttackInterval => attackInterval;
 
@@ -52,14 +60,50 @@ public abstract class BaseTower : MonoBehaviour, ITowers
     public virtual void Upgrade()
     {
         if (isDebug) Debug.Log($"{gameObject.name} is being upgraded!");
+        damage += damageUpgrade;
+        attackInterval -= intervalUpgrade;
+    }
+
+    public virtual void CreateProjectile(Transform target)
+    {
+        if (projectile != null && target != null)
+        {
+            GameObject spawnedProjectile = Instantiate(projectile, transform.position, Quaternion.identity);
+            Projectile proj = spawnedProjectile.GetComponent<Projectile>();
+
+            if (proj != null)
+            {
+                proj.Initialize(target, 5f, damage); // Example: speed = 10, use the tower's damage
+            }
+        }
     }
     
+    public GameObject TriggerAoDAttack(Vector3 position)
+    {
+        if (projectile == null) return null;
+        
+        GameObject aodInstance = Instantiate(projectile, position, Quaternion.identity);
+        AreaOfDamageVisual aodVisual = aodInstance.GetComponent<AreaOfDamageVisual>();
+        if (aodVisual != null)
+        {
+            aodVisual.AssignDuration(attackInterval); // Use the attack interval as the duration
+        }
+
+        return aodInstance;
+    }
+
+    public void UpgradeTower()
+    {
+        Upgrade();
+        EventBus.Publish("TowerUpgraded", gameObject);
+    }
+
     public virtual void OnTriggerEnter(Collider other)
     {
         Enemy enemy = other.GetComponentInParent<Enemy>();
         if (enemy != null)
         {
-            enemiesInRange.Add(enemy);
+            _enemiesInRange.Add(enemy);
             //Attack(enemy);
         }
     }
@@ -69,7 +113,7 @@ public abstract class BaseTower : MonoBehaviour, ITowers
         Enemy enemy = other.GetComponentInParent<Enemy>();
         if (enemy != null)
         {
-            enemiesInRange.Remove(enemy);
+            _enemiesInRange.Remove(enemy);
             //StopAttack(enemy);
         }
     }

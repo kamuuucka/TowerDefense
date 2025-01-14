@@ -15,12 +15,21 @@ public class TowerPlacer : MonoBehaviour
     {
         EventBus.Subscribe<Transform>("TowerPlaced", SpawnTower);
         EventBus.Subscribe<int>("OnMoneyChanged", UpdateMoney);
+        EventBus.Subscribe<GameObject>("TowerUpgraded", OnTowerUpgraded);
     }
+
 
     private void OnDisable()
     {
         EventBus.Unsubscribe<Transform>("TowerPlaced", SpawnTower);
         EventBus.Unsubscribe<int>("OnMoneyChanged", UpdateMoney);
+        EventBus.Unsubscribe<GameObject>("TowerUpgraded", OnTowerUpgraded);
+    }
+    
+    private void OnTowerUpgraded(GameObject selectedTower)
+    {
+        var meshFilter = selectedTower.GetComponentInChildren<MeshFilter>();
+       // meshFilter.mesh = towerUpgraded;
     }
 
     private void Start()
@@ -41,6 +50,10 @@ public class TowerPlacer : MonoBehaviour
 
     private void SelectTower(BaseTower.TowerType towerType)
     {
+        foreach (var tower in towers)
+        {
+            Debug.Log(tower.towerType);
+        }
         _selectedTower = towers.Find(tower => tower.towerType == towerType);
 
         if (_selectedTower != null)
