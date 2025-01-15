@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /// <summary>
 /// Responsible for the wave data required by the GameData
@@ -6,7 +8,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Wave Data", menuName = "ScriptableObjects/CreateWaveData", order = 2)]
 public class WaveData : ScriptableObject
 {
-    [SerializeField] public int enemyAmount;
-    [SerializeField] public int delayBetweenEnemies;
-    
+    [SerializeField] public float delayBetweenEnemies;
+    [SerializeField] public List<Enemy> enemies;
+
 }

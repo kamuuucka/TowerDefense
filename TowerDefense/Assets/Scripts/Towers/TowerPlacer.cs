@@ -12,7 +12,6 @@ public class TowerPlacer : MonoBehaviour
     {
         EventBus.Subscribe<Transform>("TowerPlaced", SpawnTower);
         EventBus.Subscribe<int>("OnMoneyChanged", UpdateMoney);
-        EventBus.Subscribe<GameObject>("TowerUpgraded", OnTowerUpgraded);
         EventBus.Subscribe<BaseTower>("TowerSelected", SelectTower);
     }
 
@@ -21,19 +20,7 @@ public class TowerPlacer : MonoBehaviour
     {
         EventBus.Unsubscribe<Transform>("TowerPlaced", SpawnTower);
         EventBus.Unsubscribe<int>("OnMoneyChanged", UpdateMoney);
-        EventBus.Unsubscribe<GameObject>("TowerUpgraded", OnTowerUpgraded);
         EventBus.Unsubscribe<BaseTower>("TowerSelected", SelectTower);
-    }
-    
-    /// <summary>
-    /// Change mesh when the tower is upgraded.
-    /// </summary>
-    /// <param name="selectedTower">The tower that you are upgrading</param>
-    private void OnTowerUpgraded(GameObject selectedTower)
-    {
-        //TODO: Change towers visuals
-        var meshFilter = selectedTower.GetComponentInChildren<MeshFilter>();
-       // meshFilter.mesh = towerUpgraded;
     }
 
     private void Start()

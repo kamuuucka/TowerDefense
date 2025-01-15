@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Easy
   m_EditorClassIdentifier: 
   buildTimeMinutes: 0
-  buildTimeSeconds: 5
+  buildTimeSeconds: 10
   lives: 5
   money: 200
   waves:
   - {fileID: 11400000, guid: dc705323ac5708849b7d58961422df3e, type: 2}
-  - {fileID: 11400000, guid: dc705323ac5708849b7d58961422df3e, type: 2}
-  - {fileID: 11400000, guid: dc705323ac5708849b7d58961422df3e, type: 2}
-  - {fileID: 11400000, guid: dc705323ac5708849b7d58961422df3e, type: 2}
-  - {fileID: 11400000, guid: dc705323ac5708849b7d58961422df3e, type: 2}
+  - {fileID: 11400000, guid: b36c3120092397c46a41f2a5dca38e28, type: 2}
+  - {fileID: 11400000, guid: 0eb03a1305d45bc47894bdc47b9e30f1, type: 2}
+  - {fileID: 11400000, guid: 4f8c42ab5f226ea4c9ec5a4de9183468, type: 2}
+  - {fileID: 11400000, guid: bfd612fea43f81c4b912436d639668df, type: 2}

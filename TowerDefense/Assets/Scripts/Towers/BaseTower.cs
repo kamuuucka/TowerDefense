@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,18 +14,22 @@ public abstract class BaseTower : MonoBehaviour, ITowers
     [SerializeField] private bool isDebug;
     [SerializeField] private float attackInterval = 1;
     [SerializeField] private GameObject projectile;
+    [SerializeField] private Button deleteBtn;
     
     [Header("UPGRADING SYSTEM")]
     [SerializeField] private int upgradeCost;
     [SerializeField] private float damageUpgrade;
     [SerializeField] private float intervalUpgrade;
     [SerializeField] private Button upgradeBtn;
+    [SerializeField] private float scaleJump = 0.05f;
     
     #endregion
 
     #region Private Variables
 
     private BoxCollider _collider;
+    private Transform _towerVisual;
+    private Vector3 _towerOriginalScale;
 
     #endregion
 
@@ -53,6 +58,16 @@ public abstract class BaseTower : MonoBehaviour, ITowers
     protected virtual void OnEnable()
     {
         EventBus.Subscribe<int>("OnMoneyChanged", SetUpgradeButton);
+        
+        foreach (Transform child in transform)
+        {
+            if (child.CompareTag("TowerVisual"))
+            {
+                _towerVisual = child;
+                _towerOriginalScale = child.localScale;
+                return;
+            }
+        }
     }
 
     protected virtual void OnDisable()
@@ -66,13 +81,22 @@ public abstract class BaseTower : MonoBehaviour, ITowers
     /// <param name="value">Money of the user.</param>
     private void SetUpgradeButton(int value)
     {
-        if (value >= upgradeCost && GameManager.Instance.IsBuild)
+        if (_towerVisual != null)
         {
-            upgradeBtn.gameObject.SetActive(true);
-        }
-        else
-        {
-            upgradeBtn.gameObject.SetActive(false);
+            if (GameManager.Instance.IsBuild && value >= upgradeCost && _towerVisual.localScale.x < _towerOriginalScale.x + scaleJump * 3)
+            {
+                upgradeBtn.gameObject.SetActive(true);
+                deleteBtn.gameObject.SetActive(false);
+            }
+            else if (GameManager.Instance.IsBuild)
+            {
+                deleteBtn.gameObject.SetActive(true);
+            }
+            else
+            {
+                upgradeBtn.gameObject.SetActive(false);
+                deleteBtn.gameObject.SetActive(false);
+            }
         }
     }
 
@@ -122,6 +146,11 @@ public abstract class BaseTower : MonoBehaviour, ITowers
         Upgrade();
         EventBus.Publish("TowerUpgraded", gameObject);
         EventBus.Publish("MoneyUpdate", -upgradeCost);
+        
+        if (_towerVisual != null)
+        {
+            _towerVisual.localScale += new Vector3(scaleJump, scaleJump, scaleJump);
+        }
     }
 
     /// <summary>
@@ -146,6 +175,11 @@ public abstract class BaseTower : MonoBehaviour, ITowers
         {
             EnemiesInRange.Remove(enemy);
         }
+    }
+
+    public void DeleteTower()
+    {
+        Destroy(gameObject);
     }
     
    

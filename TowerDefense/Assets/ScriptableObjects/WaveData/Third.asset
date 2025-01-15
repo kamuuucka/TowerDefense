@@ -10,7 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 40f65e7873d9f46a48035a40b149187e, type: 3}
-  m_Name: Easy
+  m_Name: Third
   m_EditorClassIdentifier: 
-  enemyAmount: 5
-  delayBetweenEnemies: 1
+  delayBetweenEnemies: 0.6
+  enemies:
+  - {fileID: 6234581071222940514, guid: 74f1dd59096584f59b3d6b54d24fce3a, type: 3}
+  - {fileID: 6234581071222940514, guid: 74f1dd59096584f59b3d6b54d24fce3a, type: 3}
+  - {fileID: 6234581071222940514, guid: 74f1dd59096584f59b3d6b54d24fce3a, type: 3}

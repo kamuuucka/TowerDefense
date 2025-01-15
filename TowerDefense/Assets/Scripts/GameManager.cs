@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
         _money = data.GetMoney();
         _buildTime = data.GetBuildTime();
         _activeWave = data.GetWaves()[_wave];
-        _enemiesToKill = _activeWave.enemyAmount;
+        _enemiesToKill = _activeWave.enemies.Count;
     }
 
     private void OnEnable()
@@ -124,7 +124,7 @@ public class GameManager : MonoBehaviour
             else
             {
                 _activeWave = data.GetWaves()[_wave];
-                _enemiesToKill = _activeWave.enemyAmount;
+                _enemiesToKill = _activeWave.enemies.Count;
                 EventBus.Publish("WavePassed", _wave);
                 StartTimer(_buildTime);
                 EventBus.Publish("OnMoneyChanged", _money);

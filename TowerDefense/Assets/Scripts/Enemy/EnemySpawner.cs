@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -6,8 +7,6 @@ using UnityEngine;
 /// </summary>
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private Enemy enemyPrefab;
-
     private void OnEnable()
     {
         EventBus.Subscribe<WaveData>("StartEnemySpawner", StartSpawningEnemies);
@@ -23,21 +22,24 @@ public class EnemySpawner : MonoBehaviour
     /// </summary>
     public void StartSpawningEnemies(WaveData data)
     {
-        StartCoroutine(SpawnEnemiesCoroutine(data.enemyAmount, data.delayBetweenEnemies));
+        StartCoroutine(SpawnEnemiesCoroutine(data.enemies.Count, data.delayBetweenEnemies, data.enemies));
     }
 
     /// <summary>
     /// Spawns the specified number of enemies with a delay between the spawns.
     /// </summary>
     /// <returns></returns>
-    private IEnumerator SpawnEnemiesCoroutine(int amountOfEnemies, float delayBetweenEnemies)
+    private IEnumerator SpawnEnemiesCoroutine(int amountOfEnemies, float delayBetweenEnemies, List<Enemy> enemies)
     {
-        if (enemyPrefab == null) yield return null;
         for (var i = 0; i < amountOfEnemies; i++)
         {
-            var enemy = Instantiate(enemyPrefab, gameObject.transform);
+            if (enemies != null)
+            {
+                var enemy = Instantiate(enemies[i], gameObject.transform);
             
-            EventBus.Publish("OnEnemySpawned", enemy);
+                EventBus.Publish("OnEnemySpawned", enemy);
+            }
+
             yield return new WaitForSeconds(delayBetweenEnemies);
         }
     }
