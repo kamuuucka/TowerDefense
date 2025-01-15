@@ -1,8 +1,9 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Tower that attacks each enemy separately.
+/// </summary>
 public class SingleAttackTower : BaseTower
 {
     private Coroutine _attackCoroutine;
@@ -34,6 +35,10 @@ public class SingleAttackTower : BaseTower
         StartAttacking(enemy);
     }
     
+    /// <summary>
+    /// Start the attack coroutine.
+    /// </summary>
+    /// <param name="enemy">Enemy that will be attacked.</param>
     private void StartAttacking(Enemy enemy)
     {
         if (_attackCoroutine != null || enemy == null) return;
@@ -41,26 +46,44 @@ public class SingleAttackTower : BaseTower
         _attackCoroutine = StartCoroutine(AttackLoop());
     }
 
+    /// <summary>
+    /// Stop the attack coroutine.
+    /// </summary>
+    /// <param name="enemy">Enemy that will stop being attacked.</param>
     private void StopAttacking(Enemy enemy)
     {
-        if (IsAttacking)
+        if (!IsAttacking) return;
+        EnemiesInRange.Remove(enemy);
+        if (_attackCoroutine == null) return;
+        StopCoroutine(_attackCoroutine);
+        StopAttack(enemy);
+        _attackCoroutine = null;
+
+    }
+    
+    /// <summary>
+    /// Create projectile and set up a target for it.
+    /// </summary>
+    /// <param name="target"></param>
+    private void CreateProjectile(Transform target)
+    {
+        if (Projectile != null && target != null)
         {
-            EnemiesInRange.Remove(enemy);
-            if (_attackCoroutine != null)
+            GameObject spawnedProjectile = Instantiate(Projectile, transform.position, Quaternion.identity);
+            Projectile proj = spawnedProjectile.GetComponent<Projectile>();
+
+            if (proj != null)
             {
-                StopCoroutine(_attackCoroutine);
-                StopAttack(enemy);
-                _attackCoroutine = null;
+                proj.Initialize(target, 5f, Damage); // Example: speed = 10, use the tower's damage
             }
         }
-        
     }
 
     public override IEnumerator AttackLoop()
     {
         while (true)
         {
-            base.CreateProjectile(_attackedEnemy.transform);
+            CreateProjectile(_attackedEnemy.transform);
             yield return new WaitForSeconds(AttackInterval);
         }
     }

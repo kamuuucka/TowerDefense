@@ -1,15 +1,12 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Manages placing specific towers on the grid.
+/// </summary>
 public class TowerPlacer : MonoBehaviour
 {
-    //[SerializeField] private List<BaseTower> towers;
-
     private int _usersMoney;
-
-    [HideInInspector] public BaseTower SelectedTower { get; private set; }
+    private BaseTower _selectedTower;
 
     private void OnEnable()
     {
@@ -28,8 +25,13 @@ public class TowerPlacer : MonoBehaviour
         EventBus.Unsubscribe<BaseTower>("TowerSelected", SelectTower);
     }
     
+    /// <summary>
+    /// Change mesh when the tower is upgraded.
+    /// </summary>
+    /// <param name="selectedTower">The tower that you are upgrading</param>
     private void OnTowerUpgraded(GameObject selectedTower)
     {
+        //TODO: Change towers visuals
         var meshFilter = selectedTower.GetComponentInChildren<MeshFilter>();
        // meshFilter.mesh = towerUpgraded;
     }
@@ -39,41 +41,43 @@ public class TowerPlacer : MonoBehaviour
         UpdateMoney(GameManager.Instance.Money);
     }
 
+    /// <summary>
+    /// Spawn specific tower on a grid cell.
+    /// </summary>
+    /// <param name="parent">The grid cell where the tower will be placed.</param>
     private void SpawnTower(Transform parent)
     {
-        if (SelectedTower != null && parent != null)
+        if (_selectedTower != null && parent != null)
         {
-            BaseTower newTower = Instantiate(SelectedTower, parent.position, Quaternion.identity);
+            BaseTower newTower = Instantiate(_selectedTower, parent.position, Quaternion.identity);
             newTower.transform.SetParent(parent);
-            EventBus.Publish("MoneyUpdate", -SelectedTower.Cost);
-            SelectedTower = null;
+            EventBus.Publish("MoneyUpdate", -_selectedTower.Cost);
+            _selectedTower = null;
         }
         
     }
-
+    
+    /// <summary>
+    /// Update the money that the user has.
+    /// </summary>
+    /// <param name="money">New amount of money.</param>
     private void UpdateMoney(int money)
     {
         _usersMoney = money;
     }
 
+    /// <summary>
+    /// Select a specific tower if the user has enough money.
+    /// </summary>
+    /// <param name="towerType">Type of the tower.</param>
     private void SelectTower(BaseTower towerType)
     {
-        SelectedTower = towerType;
-        
-        if (SelectedTower != null)
+        _selectedTower = towerType;
+
+        if (_selectedTower == null) return;
+        if (_usersMoney >= _selectedTower.Cost)
         {
-            if (_usersMoney >= SelectedTower.Cost)
-            {
-                _usersMoney -= SelectedTower.Cost;
-            }
-            else
-            {
-                Debug.Log("Not enough money to buy this tower.");
-            }
-        }
-        else
-        {
-            Debug.LogError("Tower not found: " + towerType);
+            _usersMoney -= _selectedTower.Cost;
         }
     }
     

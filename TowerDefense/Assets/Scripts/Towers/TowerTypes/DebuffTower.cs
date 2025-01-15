@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Tower slowing down the enemies.
+/// </summary>
 public class DebuffTower : BaseTower
 {
     private Coroutine _attackCoroutine;
@@ -11,20 +13,20 @@ public class DebuffTower : BaseTower
     protected override void OnEnable()
     {
         base.OnEnable();
-        EventBus.Subscribe<Enemy>("EnemyDeath", OnEnemyDeath);
+        EventBus.Subscribe<Enemy>("EnemyDeath", RemoveEnemyFromRange);
         _attackCoroutine = StartCoroutine(AttackLoop());
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
-        EventBus.Unsubscribe<Enemy>("EnemyDeath", OnEnemyDeath);
+        EventBus.Unsubscribe<Enemy>("EnemyDeath", RemoveEnemyFromRange);
         StopCoroutine(_attackCoroutine);
     }
 
     public override void Attack(Enemy enemy)
     {
-        enemy.SlowDownEnemy(Damage); // Damage all enemies in range
+        enemy.SlowDownEnemy(Damage);
     }
 
     public override void StopAttack(Enemy enemy)
@@ -33,9 +35,29 @@ public class DebuffTower : BaseTower
         enemy.RestoreOriginalSpeed();
     }
 
-    private void OnEnemyDeath(Enemy enemy)
+    /// <summary>
+    /// Remove the enemy from the range of enemies.
+    /// </summary>
+    /// <param name="enemy">Enemy that will be removed.</param>
+    private void RemoveEnemyFromRange(Enemy enemy)
     {
         EnemiesInRange.Remove(enemy);
+    }
+    
+    /// <summary>
+    /// Trigger the attack in the area.
+    /// </summary>
+    /// <param name="position">Position of the tower.</param>
+    private void TriggerAoDAttack(Vector3 position)
+    {
+        if (Projectile == null) return;
+        
+        GameObject aodInstance = Instantiate(Projectile, position, Quaternion.identity);
+        AreaOfDamageVisual aodVisual = aodInstance.GetComponent<AreaOfDamageVisual>();
+        if (aodVisual != null)
+        {
+            aodVisual.AssignDuration(AttackInterval); // Use the attack interval as the duration
+        }
     }
 
     public override IEnumerator AttackLoop()
@@ -44,12 +66,10 @@ public class DebuffTower : BaseTower
         {
             if (EnemiesInRange.Count > 0)
             {
-                // Phase 1: Attack Duration
-                float attackDuration = AttackInterval * 0.8f; // Attack for 80% of the interval
-                float cooldownDuration = AttackInterval * 0.2f; // Cooldown for 20% of the interval
+                float attackDuration = AttackInterval * 0.8f;
+                float cooldownDuration = AttackInterval * 0.2f;
                 float elapsed = 0f;
-
-                // Trigger AoD attack once at the start of the attack duration
+                
                 TriggerAoDAttack(transform.position);
                 Debug.Log("Triggered AoD attack at the start of the duration");
 
@@ -75,6 +95,10 @@ public class DebuffTower : BaseTower
         }
     }
 
+    /// <summary>
+    /// Process the actions for all the enemies in range. Used to for example stop the effect of the debuff.
+    /// </summary>
+    /// <param name="enemyAction">Action that will be performed.</param>
     private void ProcessEnemies(Action<Enemy> enemyAction)
     {
         for (int i = EnemiesInRange.Count - 1; i >= 0; i--)

@@ -1,6 +1,9 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Tower attacking all the enemies in range at once.
+/// </summary>
 public class AreaOfDamageTower : BaseTower
 {
     private Coroutine _attackCoroutine;
@@ -9,26 +12,48 @@ public class AreaOfDamageTower : BaseTower
     protected override void OnEnable()
     {
         base.OnEnable();
-        EventBus.Subscribe<Enemy>("EnemyDeath", OnEnemyDeath);
+        EventBus.Subscribe<Enemy>("EnemyDeath", RemoveEnemyFromRange);
         _attackCoroutine = StartCoroutine(AttackLoop());
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
-        EventBus.Unsubscribe<Enemy>("EnemyDeath", OnEnemyDeath);
+        EventBus.Unsubscribe<Enemy>("EnemyDeath", RemoveEnemyFromRange);
         StopCoroutine(_attackCoroutine);
     }
 
     public override void Attack(Enemy enemy)
     {
         base.Attack(enemy);
-        enemy.DamageEnemy(Damage); // Damage all enemies in range
+        enemy.DamageEnemy(Damage); 
     }
     
-    private void OnEnemyDeath(Enemy enemy)
+    /// <summary>
+    /// Remove enemy from the range of the enemies.
+    /// </summary>
+    /// <param name="enemy"></param>
+    private void RemoveEnemyFromRange(Enemy enemy)
     {
         EnemiesInRange.Remove(enemy);
+    }
+    
+    /// <summary>
+    /// Trigger the attack in the area.
+    /// </summary>
+    /// <param name="position">Position of the tower.</param>
+    private GameObject TriggerAoDAttack(Vector3 position)
+    {
+        if (Projectile == null) return null;
+        
+        GameObject aodInstance = Instantiate(Projectile, position, Quaternion.identity);
+        AreaOfDamageVisual aodVisual = aodInstance.GetComponent<AreaOfDamageVisual>();
+        if (aodVisual != null)
+        {
+            aodVisual.AssignDuration(AttackInterval);
+        }
+
+        return aodInstance;
     }
 
     public override IEnumerator AttackLoop()

@@ -40,11 +40,10 @@ public abstract class BaseTower : MonoBehaviour, ITowers
     
     public int Cost => cost;
     public float Damage => damage;
+    public GameObject Projectile => projectile;
     
     #endregion
-
-
-
+    
     protected virtual void Awake()
     {
         _collider = GetComponent<BoxCollider>();
@@ -53,15 +52,19 @@ public abstract class BaseTower : MonoBehaviour, ITowers
 
     protected virtual void OnEnable()
     {
-        EventBus.Subscribe<int>("OnMoneyChanged", OnMoneyChanged);
+        EventBus.Subscribe<int>("OnMoneyChanged", SetUpgradeButton);
     }
 
     protected virtual void OnDisable()
     {
-        EventBus.Unsubscribe<int>("OnMoneyChanged", OnMoneyChanged);
+        EventBus.Unsubscribe<int>("OnMoneyChanged", SetUpgradeButton);
     }
 
-    private void OnMoneyChanged(int value)
+    /// <summary>
+    /// Changes the visibility of the upgrade button depending on if the user can afford the upgrade.
+    /// </summary>
+    /// <param name="value">Money of the user.</param>
+    private void SetUpgradeButton(int value)
     {
         if (value >= upgradeCost && GameManager.Instance.IsBuild)
         {
@@ -73,18 +76,29 @@ public abstract class BaseTower : MonoBehaviour, ITowers
         }
     }
 
+    /// <summary>
+    /// Attack the specific enemy.
+    /// </summary>
+    /// <param name="enemy">Enemy to attack.</param>
     public virtual void Attack(Enemy enemy)
     {
        if (isDebug) Debug.Log($"{gameObject.name} is attacking!");
        IsAttacking = true;
     }
 
+    /// <summary>
+    /// Stop attacking the specific enemy.
+    /// </summary>
+    /// <param name="enemy">Enemy that should not be attacked.</param>
     public virtual void StopAttack(Enemy enemy)
     {
         if (isDebug) Debug.Log($"{gameObject.name} is stopping the attack!");
         IsAttacking = false;
     }
 
+    /// <summary>
+    /// Upgrade the tower by adding the damage and subtracting the atttack interval speed.
+    /// </summary>
     public virtual void Upgrade()
     {
         if (isDebug) Debug.Log($"{gameObject.name} is being upgraded!");
@@ -92,39 +106,17 @@ public abstract class BaseTower : MonoBehaviour, ITowers
         attackInterval -= intervalUpgrade;
     }
 
-    public virtual void CreateProjectile(Transform target)
-    {
-        if (projectile != null && target != null)
-        {
-            GameObject spawnedProjectile = Instantiate(projectile, transform.position, Quaternion.identity);
-            Projectile proj = spawnedProjectile.GetComponent<Projectile>();
-
-            if (proj != null)
-            {
-                proj.Initialize(target, 5f, damage); // Example: speed = 10, use the tower's damage
-            }
-        }
-    }
-
+    /// <summary>
+    /// Attack loop for each tower.
+    /// </summary>
     public virtual IEnumerator AttackLoop()
     {
         yield return null;
     }
 
-    public GameObject TriggerAoDAttack(Vector3 position)
-    {
-        if (projectile == null) return null;
-        
-        GameObject aodInstance = Instantiate(projectile, position, Quaternion.identity);
-        AreaOfDamageVisual aodVisual = aodInstance.GetComponent<AreaOfDamageVisual>();
-        if (aodVisual != null)
-        {
-            aodVisual.AssignDuration(attackInterval); // Use the attack interval as the duration
-        }
-
-        return aodInstance;
-    }
-
+    /// <summary>
+    /// Upgrade the tower and send the information to other scripts.
+    /// </summary>
     public void UpgradeTower()
     {
         Upgrade();
@@ -132,6 +124,9 @@ public abstract class BaseTower : MonoBehaviour, ITowers
         EventBus.Publish("MoneyUpdate", -upgradeCost);
     }
 
+    /// <summary>
+    /// Add enemy to the list of enemies in range if they enter the collider.
+    /// </summary>
     public virtual void OnTriggerEnter(Collider other)
     {
         Enemy enemy = other.GetComponentInParent<Enemy>();
@@ -141,6 +136,9 @@ public abstract class BaseTower : MonoBehaviour, ITowers
         }
     }
 
+    /// <summary>
+    /// Remove enemy from the list of enemies in range if they exit the collider.
+    /// </summary>
     public virtual void OnTriggerExit(Collider other)
     {
         Enemy enemy = other.GetComponentInParent<Enemy>();

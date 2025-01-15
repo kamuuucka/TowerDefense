@@ -1,12 +1,12 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
+/// <summary>
+/// Manages the mouse input on the screen.
+/// </summary>
 public class InputManager : MonoBehaviour
 {
-    [SerializeField] private GameObject pointer;
-    
+    [SerializeField] private GameObject pointerPrefab;
     
     private Ray _ray;
     private RaycastHit _hit;
@@ -28,19 +28,21 @@ public class InputManager : MonoBehaviour
         _isBuildMode = isBuild;
     }
 
-    void Update()
+    private void Update()
     {
         if (!_isBuildMode)
         {
             if (_pointer != null) Destroy(_pointer.gameObject);
             return;
         }
-        _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Camera.main != null) _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        
         if(Physics.Raycast(_ray, out _hit))
         {
             if (_hit.transform != null && _pointer == null)
             {
-                _pointer = Instantiate(pointer, _hit.transform.position, Quaternion.identity);
+                _pointer = Instantiate(pointerPrefab, _hit.transform.position, Quaternion.identity);
             }
             else if (_hit.transform != null)
             {

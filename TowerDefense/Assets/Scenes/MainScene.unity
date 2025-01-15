@@ -2375,6 +2375,10 @@ PrefabInstance:
       propertyPath: isDebug
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1974883671474108792, guid: 136fa267b4f514f178b0295de8db3a46, type: 3}
+      propertyPath: pointerPrefab
+      value: 
+      objectReference: {fileID: 8940419580530263648, guid: 3d3955fef13f24d12a9ab83cb0e16d0b, type: 3}
     - target: {fileID: 7007892453514307379, guid: 136fa267b4f514f178b0295de8db3a46, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3192,7 +3196,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 79.55
+  m_fontSize: 79.6
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
