@@ -1,18 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Destroys the object after specific amount of seconds.
+/// </summary>
 public class DestroyAfterSeconds : MonoBehaviour
 {
     [SerializeField] private float time;
     private void Start()
     {
-        StartCoroutine(SelfDestruct());
+        Destroy(gameObject, time);
     }
-
-    private IEnumerator SelfDestruct()
-    {
-        yield return new WaitForSeconds(time);
-        Destroy(gameObject);
-    }
+    
 }

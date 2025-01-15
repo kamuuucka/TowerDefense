@@ -1,22 +1,32 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 
+/// <summary>
+/// Class responsible for the Enemy behaviour
+/// </summary>
 public class Enemy : MonoBehaviour
 {
+    #region Exposed Variables
+
     [SerializeField] private float speed = 1f;
     [SerializeField] private float health;
     [SerializeField] private int money;
     [SerializeField] private GameObject moneyUI;
     [SerializeField] private Slider slider;
+    
+    #endregion
+
+    #region Private Variables
+
     private NavMeshAgent _agent;
     private Vector3 _target;
     private float _currentHealth;
     private bool _justSpawned = true;
     private bool _slowedDown;
+    
+    #endregion
 
     public int Money => money;
 
@@ -37,11 +47,9 @@ public class Enemy : MonoBehaviour
         }
         slider.value = _currentHealth;
 
-        if (CheckIfFinished())
-        {
-            EventBus.Publish("OnEnemyReachedEnd");
-            DestroyEnemy();
-        }
+        if (!CheckIfFinished()) return;
+        EventBus.Publish("OnEnemyReachedEnd");
+        DestroyEnemy();
     }
     
     /// <summary>
@@ -60,14 +68,16 @@ public class Enemy : MonoBehaviour
     public void DamageEnemy(float damage)
     {
         _currentHealth -= damage;
-        if (_currentHealth <= 0 && transform != null)
-        {
-            _currentHealth = 0;
-            Instantiate(moneyUI, transform.position, Quaternion.identity);
-            DestroyEnemy();
-        }
+        if (!(_currentHealth <= 0) || transform == null) return;
+        _currentHealth = 0;
+        Instantiate(moneyUI, transform.position, Quaternion.identity);
+        DestroyEnemy();
     }
 
+    /// <summary>
+    /// Slows down the enemy by the specific amount.
+    /// </summary>
+    /// <param name="slowDown">Amount that the enemy gets slowed down by.</param>
     public void SlowDownEnemy(float slowDown)
     {
         if (_slowedDown) return;
@@ -75,6 +85,9 @@ public class Enemy : MonoBehaviour
         _agent.speed *= slowDown;
     }
 
+    /// <summary>
+    /// Restores the original speed of the enemy.
+    /// </summary>
     public void RestoreOriginalSpeed()
     {
         if (!_slowedDown) return;

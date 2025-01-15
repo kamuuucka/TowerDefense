@@ -1,8 +1,9 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Responsible for spawning the enemies from a spawner.
+/// </summary>
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private Enemy enemyPrefab;
@@ -31,6 +32,7 @@ public class EnemySpawner : MonoBehaviour
     /// <returns></returns>
     private IEnumerator SpawnEnemiesCoroutine(int amountOfEnemies, float delayBetweenEnemies)
     {
+        if (enemyPrefab == null) yield return null;
         for (var i = 0; i < amountOfEnemies; i++)
         {
             var enemy = Instantiate(enemyPrefab, gameObject.transform);

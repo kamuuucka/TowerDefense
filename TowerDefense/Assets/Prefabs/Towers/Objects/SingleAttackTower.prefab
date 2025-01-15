@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4468702229585390370
 RectTransform:
   m_ObjectHideFlags: 0
@@ -291,7 +291,7 @@ MonoBehaviour:
   upgradeCost: 25
   damageUpgrade: 2
   intervalUpgrade: 0.5
-  towerType: 0
+  upgradeBtn: {fileID: 7873668357158224802}
 --- !u!65 &6950072983013525944
 BoxCollider:
   m_ObjectHideFlags: 0

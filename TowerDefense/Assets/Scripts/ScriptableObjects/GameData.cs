@@ -1,22 +1,26 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Responsible for the data of each game style
+/// </summary>
 [CreateAssetMenu(fileName = "Game Data", menuName = "ScriptableObjects/CreateGameData", order = 1)]
 public class GameData : ScriptableObject
 {
-    [HideInInspector] public int roundTimeMinutes;
-    [HideInInspector] public int roundTimeSeconds;
+    #region Public Variables
+
     [HideInInspector] public int buildTimeMinutes;
     [HideInInspector] public int buildTimeSeconds;
-    [SerializeField] private int _lives;
-    [SerializeField] private int _money;
-    [SerializeField] private List<WaveData> _waves;
 
-    public int GetRoundTime()
-    {
-        return roundTimeMinutes * 60 + roundTimeSeconds;
-    }
+    #endregion
+
+    #region Private Variables
+
+    [SerializeField] private int lives;
+    [SerializeField] private int money;
+    [SerializeField] private List<WaveData> waves;
+
+    #endregion
 
     public int GetBuildTime()
     {
@@ -25,16 +29,16 @@ public class GameData : ScriptableObject
 
     public int GetLives()
     {
-        return _lives;
+        return lives;
     }
 
     public int GetMoney()
     {
-        return _money;
+        return money;
     }
 
     public List<WaveData> GetWaves()
     {
-        return _waves;
+        return waves;
     }
 }

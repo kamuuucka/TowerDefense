@@ -6,14 +6,17 @@ using UnityEngine;
 public class SingleAttackTower : BaseTower
 {
     private Coroutine _attackCoroutine;
-    
-    private void OnEnable()
+    private Enemy _attackedEnemy;
+
+    protected override void OnEnable()
     {
+        base.OnEnable();
         EventBus.Subscribe<Enemy>("EnemyDeath", StopAttacking);
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         EventBus.Unsubscribe<Enemy>("EnemyDeath", StopAttacking);
     }
 
@@ -33,10 +36,9 @@ public class SingleAttackTower : BaseTower
     
     private void StartAttacking(Enemy enemy)
     {
-        if (_attackCoroutine == null && enemy !=null)
-        {
-            _attackCoroutine = StartCoroutine(AttackLoop(enemy));
-        }
+        if (_attackCoroutine != null || enemy == null) return;
+        _attackedEnemy = enemy;
+        _attackCoroutine = StartCoroutine(AttackLoop());
     }
 
     private void StopAttacking(Enemy enemy)
@@ -54,11 +56,11 @@ public class SingleAttackTower : BaseTower
         
     }
 
-    private IEnumerator AttackLoop(Enemy enemy)
+    public override IEnumerator AttackLoop()
     {
         while (true)
         {
-            base.CreateProjectile(enemy.transform);
+            base.CreateProjectile(_attackedEnemy.transform);
             yield return new WaitForSeconds(AttackInterval);
         }
     }

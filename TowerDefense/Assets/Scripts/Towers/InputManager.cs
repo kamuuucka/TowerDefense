@@ -30,8 +30,6 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
-        //TODO: When the tower is placed, can't place around them.
-        //TODO: Player can buy few towers at once. Make them click the button every time.
         if (!_isBuildMode)
         {
             if (_pointer != null) Destroy(_pointer.gameObject);
@@ -63,10 +61,5 @@ public class InputManager : MonoBehaviour
             Destroy(_pointer.gameObject);
         }
 
-    }
-
-    public void UpgradeTower(GameObject obj)
-    {
-        EventBus.Publish("TowerUpgraded", obj);
     }
 }

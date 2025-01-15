@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour
     public int Money => _money;
     public int Waves => _wave;
 
+    [HideInInspector] public bool IsBuild;
+
     public static GameManager Instance { get; private set; }
 
     private void Awake()
@@ -43,7 +45,6 @@ public class GameManager : MonoBehaviour
         _lives = data.GetLives();
         _money = data.GetMoney();
         _buildTime = data.GetBuildTime();
-        _roundTime = data.GetRoundTime();
         _activeWave = data.GetWaves()[_wave];
         _enemiesToKill = _activeWave.enemyAmount;
     }
@@ -57,10 +58,12 @@ public class GameManager : MonoBehaviour
         EventBus.Subscribe("OnEnemyReachedEnd", LoseLife);
         EventBus.Subscribe<Enemy>("EnemyDeath", OnEnemyDeath);
         EventBus.Subscribe<bool>("GameModeSwitch", OnGameModeSwitched);
-        
+        EventBus.Subscribe<int>("MoneyUpdate", AdjustMoneyValue);
+        IsBuild = true;
         StartTimer(_buildTime);
     }
-    
+
+
     private void OnDisable()
     {
         //Unsubscribes the AssignPathEndPoint method from the event called "OnEnemySpawned".
@@ -69,6 +72,7 @@ public class GameManager : MonoBehaviour
         EventBus.Unsubscribe("OnEnemyReachedEnd", LoseLife);
         EventBus.Unsubscribe<Enemy>("EnemyDeath", OnEnemyDeath);
         EventBus.Unsubscribe<bool>("GameModeSwitch", OnGameModeSwitched);
+        EventBus.Unsubscribe<int>("MoneyUpdate", AdjustMoneyValue);
     }
 
     private void StartTimer(int time)
@@ -87,7 +91,6 @@ public class GameManager : MonoBehaviour
 
         while (_currentTime > 0)
         {
-            //Debug.Log($"Time Left: {_currentTime}");
             EventBus.Publish("OnTimeChanged", _currentTime);
             yield return new WaitForSeconds(1);
             _currentTime--;
@@ -99,6 +102,7 @@ public class GameManager : MonoBehaviour
     
     private void OnGameModeSwitched(bool isBuild)
     {
+        IsBuild = isBuild;
         if (isBuild)
         {
             onBuildOn?.Invoke();
@@ -114,6 +118,7 @@ public class GameManager : MonoBehaviour
                 _enemiesToKill = _activeWave.enemyAmount;
                 EventBus.Publish("WavePassed", _wave);
                 StartTimer(_buildTime);
+                EventBus.Publish("OnMoneyChanged", _money);
             }
         }
         else
@@ -157,13 +162,18 @@ public class GameManager : MonoBehaviour
     /// <param name="enemy">Enemy that the money is taken from.</param>
     private void OnEnemyDeath(Enemy enemy)
     {
-        _money += enemy.Money;
-        EventBus.Publish("OnMoneyChanged", _money);
+        AdjustMoneyValue(enemy.Money);
         _enemiesToKill--;
 
         if (_enemiesToKill <= 0)
         {
             OnGameModeSwitched(true);
         }
+    }
+    
+    private void AdjustMoneyValue(int cost)
+    {
+        _money += cost;
+        EventBus.Publish("OnMoneyChanged", _money);
     }
 }

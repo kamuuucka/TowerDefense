@@ -2,9 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class BaseTower : MonoBehaviour, ITowers
 {
+    #region ExposedVariables
+
     [SerializeField] private int cost;
     [SerializeField] private float damage;
     [SerializeField] private bool isDebug;
@@ -15,29 +18,32 @@ public abstract class BaseTower : MonoBehaviour, ITowers
     [SerializeField] private int upgradeCost;
     [SerializeField] private float damageUpgrade;
     [SerializeField] private float intervalUpgrade;
+    [SerializeField] private Button upgradeBtn;
+    
+    #endregion
+
+    #region Private Variables
 
     private BoxCollider _collider;
-    private readonly List<Enemy> _enemiesInRange = new ();
-    private bool _isAttacking;
-    
-    public enum TowerType
-    {
-        SingleAttack,
-        AreaOfDamage,
-        DebuffTower
-    }
-    
-    public TowerType towerType;
 
+    #endregion
+
+    #region Protected Variables
+    
+    protected bool IsAttacking { get; private set; }
+    protected List<Enemy> EnemiesInRange { get; } = new ();
+    protected float AttackInterval => attackInterval;
+    
+    #endregion
+
+    #region Public Variables
+    
     public int Cost => cost;
-    public int UpgradeCost => upgradeCost;
     public float Damage => damage;
+    
+    #endregion
 
-    public bool IsAttacking => _isAttacking;
 
-    public List<Enemy> EnemiesInRange => _enemiesInRange;
-
-    public float AttackInterval => attackInterval;
 
     protected virtual void Awake()
     {
@@ -45,16 +51,38 @@ public abstract class BaseTower : MonoBehaviour, ITowers
         _collider.isTrigger = true;
     }
 
+    protected virtual void OnEnable()
+    {
+        EventBus.Subscribe<int>("OnMoneyChanged", OnMoneyChanged);
+    }
+
+    protected virtual void OnDisable()
+    {
+        EventBus.Unsubscribe<int>("OnMoneyChanged", OnMoneyChanged);
+    }
+
+    private void OnMoneyChanged(int value)
+    {
+        if (value >= upgradeCost && GameManager.Instance.IsBuild)
+        {
+            upgradeBtn.gameObject.SetActive(true);
+        }
+        else
+        {
+            upgradeBtn.gameObject.SetActive(false);
+        }
+    }
+
     public virtual void Attack(Enemy enemy)
     {
        if (isDebug) Debug.Log($"{gameObject.name} is attacking!");
-       _isAttacking = true;
+       IsAttacking = true;
     }
 
     public virtual void StopAttack(Enemy enemy)
     {
         if (isDebug) Debug.Log($"{gameObject.name} is stopping the attack!");
-        _isAttacking = false;
+        IsAttacking = false;
     }
 
     public virtual void Upgrade()
@@ -77,7 +105,12 @@ public abstract class BaseTower : MonoBehaviour, ITowers
             }
         }
     }
-    
+
+    public virtual IEnumerator AttackLoop()
+    {
+        yield return null;
+    }
+
     public GameObject TriggerAoDAttack(Vector3 position)
     {
         if (projectile == null) return null;
@@ -96,6 +129,7 @@ public abstract class BaseTower : MonoBehaviour, ITowers
     {
         Upgrade();
         EventBus.Publish("TowerUpgraded", gameObject);
+        EventBus.Publish("MoneyUpdate", -upgradeCost);
     }
 
     public virtual void OnTriggerEnter(Collider other)
@@ -103,8 +137,7 @@ public abstract class BaseTower : MonoBehaviour, ITowers
         Enemy enemy = other.GetComponentInParent<Enemy>();
         if (enemy != null)
         {
-            _enemiesInRange.Add(enemy);
-            //Attack(enemy);
+            EnemiesInRange.Add(enemy);
         }
     }
 
@@ -113,8 +146,7 @@ public abstract class BaseTower : MonoBehaviour, ITowers
         Enemy enemy = other.GetComponentInParent<Enemy>();
         if (enemy != null)
         {
-            _enemiesInRange.Remove(enemy);
-            //StopAttack(enemy);
+            EnemiesInRange.Remove(enemy);
         }
     }
     

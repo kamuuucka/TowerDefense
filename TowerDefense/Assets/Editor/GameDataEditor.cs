@@ -11,22 +11,6 @@ public class GameDataEditor : Editor
         base.OnInspectorGUI();
         
         GameData myTarget = (GameData)target;
-
-        EditorGUILayout.LabelField("Wave time", EditorStyles.boldLabel);
-
-        EditorGUILayout.BeginVertical();
-        
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("Minutes", GUILayout.Width(100));
-        EditorGUILayout.LabelField("Seconds", GUILayout.Width(100));
-        EditorGUILayout.EndHorizontal();
-        
-        EditorGUILayout.BeginHorizontal();
-        myTarget.roundTimeMinutes = EditorGUILayout.IntField(myTarget.roundTimeMinutes, GUILayout.Width(100));
-        myTarget.roundTimeSeconds = EditorGUILayout.IntField(myTarget.roundTimeSeconds, GUILayout.Width(100));
-        EditorGUILayout.EndHorizontal();
-
-        EditorGUILayout.EndVertical();
         
         EditorGUILayout.LabelField("Build time", EditorStyles.boldLabel);
 

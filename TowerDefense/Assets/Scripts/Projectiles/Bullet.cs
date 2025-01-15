@@ -1,48 +1,55 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Responsible for the projectiles in the scene.
+/// </summary>
 public class Projectile : MonoBehaviour
 {
-    private Transform target;
-    private float speed;
-    private float damage;
+    private Transform _target;
+    private float _speed;
+    private float _damage;
 
-    public void Initialize(Transform target, float speed, float damage)
-    {
-        this.target = target;
-        this.speed = speed;
-        this.damage = damage;
-    }
 
     private void Update()
     {
-        if (target == null)
+        if (_target == null)
         {
-            Destroy(gameObject); // Destroy if target no longer exists
+            Destroy(gameObject);
             return;
         }
-
-        // Move towards the target
-        transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
-
-        // Check if the projectile has reached the target
-        if (Vector3.Distance(transform.position, target.position) < 0.1f)
+        
+        transform.position = Vector3.MoveTowards(transform.position, _target.position, _speed * Time.deltaTime);
+        
+        if (Vector3.Distance(transform.position, _target.position) < 0.1f)
         {
             HitTarget();
         }
     }
 
+    /// <summary>
+    /// Damage the hit target and destroy itself.
+    /// </summary>
     private void HitTarget()
     {
-        // Apply damage to the enemy if it has a health component
-        var enemy = target.GetComponent<Enemy>();
+        var enemy = _target.GetComponent<Enemy>();
         if (enemy != null)
         {
-            enemy.DamageEnemy(damage); // Assuming `Enemy` has a `TakeDamage` method
+            enemy.DamageEnemy(_damage);
         }
 
-        Destroy(gameObject); // Destroy the projectile
+        Destroy(gameObject);
+    }
+    
+    /// <summary>
+    /// Initialise the specifics of the projectile.
+    /// </summary>
+    /// <param name="target">Target to follow.</param>
+    /// <param name="speed">Speed with which it should move.</param>
+    /// <param name="damage">Damage that it should deal.</param>
+    public void Initialize(Transform target, float speed, float damage)
+    {
+        _target = target;
+        _speed = speed;
+        _damage = damage;
     }
 }

@@ -8,14 +8,16 @@ public class DebuffTower : BaseTower
     private Coroutine _attackCoroutine;
     private GameObject _aodVisual;
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         EventBus.Subscribe<Enemy>("EnemyDeath", OnEnemyDeath);
         _attackCoroutine = StartCoroutine(AttackLoop());
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         EventBus.Unsubscribe<Enemy>("EnemyDeath", OnEnemyDeath);
         StopCoroutine(_attackCoroutine);
     }
@@ -36,7 +38,7 @@ public class DebuffTower : BaseTower
         EnemiesInRange.Remove(enemy);
     }
 
-    private IEnumerator AttackLoop()
+    public override IEnumerator AttackLoop()
     {
         while (true)
         {

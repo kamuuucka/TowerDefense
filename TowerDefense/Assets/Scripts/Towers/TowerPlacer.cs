@@ -5,17 +5,18 @@ using UnityEngine;
 
 public class TowerPlacer : MonoBehaviour
 {
-    //[SerializeField] private GameObject tower;
-    [SerializeField] private List<BaseTower> towers;
+    //[SerializeField] private List<BaseTower> towers;
 
     private int _usersMoney;
-    private BaseTower _selectedTower;
+
+    [HideInInspector] public BaseTower SelectedTower { get; private set; }
 
     private void OnEnable()
     {
         EventBus.Subscribe<Transform>("TowerPlaced", SpawnTower);
         EventBus.Subscribe<int>("OnMoneyChanged", UpdateMoney);
         EventBus.Subscribe<GameObject>("TowerUpgraded", OnTowerUpgraded);
+        EventBus.Subscribe<BaseTower>("TowerSelected", SelectTower);
     }
 
 
@@ -24,6 +25,7 @@ public class TowerPlacer : MonoBehaviour
         EventBus.Unsubscribe<Transform>("TowerPlaced", SpawnTower);
         EventBus.Unsubscribe<int>("OnMoneyChanged", UpdateMoney);
         EventBus.Unsubscribe<GameObject>("TowerUpgraded", OnTowerUpgraded);
+        EventBus.Unsubscribe<BaseTower>("TowerSelected", SelectTower);
     }
     
     private void OnTowerUpgraded(GameObject selectedTower)
@@ -39,8 +41,14 @@ public class TowerPlacer : MonoBehaviour
 
     private void SpawnTower(Transform parent)
     {
-        BaseTower newTower = Instantiate(_selectedTower, parent.position, Quaternion.identity);
-        newTower.transform.SetParent(parent);
+        if (SelectedTower != null && parent != null)
+        {
+            BaseTower newTower = Instantiate(SelectedTower, parent.position, Quaternion.identity);
+            newTower.transform.SetParent(parent);
+            EventBus.Publish("MoneyUpdate", -SelectedTower.Cost);
+            SelectedTower = null;
+        }
+        
     }
 
     private void UpdateMoney(int money)
@@ -48,22 +56,15 @@ public class TowerPlacer : MonoBehaviour
         _usersMoney = money;
     }
 
-    private void SelectTower(BaseTower.TowerType towerType)
+    private void SelectTower(BaseTower towerType)
     {
-        foreach (var tower in towers)
+        SelectedTower = towerType;
+        
+        if (SelectedTower != null)
         {
-            Debug.Log(tower.towerType);
-        }
-        _selectedTower = towers.Find(tower => tower.towerType == towerType);
-
-        if (_selectedTower != null)
-        {
-            Debug.Log(_selectedTower.name);
-            Debug.Log(_selectedTower.Cost);
-            if (_usersMoney >= _selectedTower.Cost)
+            if (_usersMoney >= SelectedTower.Cost)
             {
-                _usersMoney -= _selectedTower.Cost;
-                EventBus.Publish("OnMoneyChanged", _usersMoney);
+                _usersMoney -= SelectedTower.Cost;
             }
             else
             {
@@ -75,22 +76,7 @@ public class TowerPlacer : MonoBehaviour
             Debug.LogError("Tower not found: " + towerType);
         }
     }
-
-    public void BuySingleAttackTower()
-    {
-        SelectTower(BaseTower.TowerType.SingleAttack);
-    }
-
-    public void BuyDebuffTower()
-    {
-        //TODO: Why doesn't it see the debuff tower????
-        SelectTower(BaseTower.TowerType.DebuffTower);
-    }
-
-    public void BuyAreaOfDamageTower()
-    {
-        SelectTower(BaseTower.TowerType.AreaOfDamage);
-    }
+    
 
     
 }

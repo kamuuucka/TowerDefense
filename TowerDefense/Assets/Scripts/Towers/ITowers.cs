@@ -10,4 +10,6 @@ public interface ITowers
     public void StopAttack(Enemy enemy);
     public void Upgrade();
     public void CreateProjectile(Transform target);
+
+    public IEnumerator AttackLoop();
 }

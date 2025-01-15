@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e0529d56f1c845a0a5e9ab3c1cd80b6, type: 3}
   m_Name: Easy
   m_EditorClassIdentifier: 
-  roundTimeMinutes: 0
-  roundTimeSeconds: 20
   buildTimeMinutes: 0
   buildTimeSeconds: 5
-  _lives: 5
-  _money: 200
-  _waves:
+  lives: 5
+  money: 200
+  waves:
+  - {fileID: 11400000, guid: dc705323ac5708849b7d58961422df3e, type: 2}
+  - {fileID: 11400000, guid: dc705323ac5708849b7d58961422df3e, type: 2}
+  - {fileID: 11400000, guid: dc705323ac5708849b7d58961422df3e, type: 2}
   - {fileID: 11400000, guid: dc705323ac5708849b7d58961422df3e, type: 2}
   - {fileID: 11400000, guid: dc705323ac5708849b7d58961422df3e, type: 2}

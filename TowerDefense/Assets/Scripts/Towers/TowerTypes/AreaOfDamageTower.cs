@@ -5,15 +5,17 @@ public class AreaOfDamageTower : BaseTower
 {
     private Coroutine _attackCoroutine;
     private GameObject _aodVisual;
-    
-    private void OnEnable()
+
+    protected override void OnEnable()
     {
+        base.OnEnable();
         EventBus.Subscribe<Enemy>("EnemyDeath", OnEnemyDeath);
         _attackCoroutine = StartCoroutine(AttackLoop());
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         EventBus.Unsubscribe<Enemy>("EnemyDeath", OnEnemyDeath);
         StopCoroutine(_attackCoroutine);
     }
@@ -29,14 +31,13 @@ public class AreaOfDamageTower : BaseTower
         EnemiesInRange.Remove(enemy);
     }
 
-    private IEnumerator AttackLoop()
+    public override IEnumerator AttackLoop()
     {
         while (true)
         {
             if (_aodVisual == null)
             {
                 _aodVisual = TriggerAoDAttack(transform.position);
-                Debug.Log($"After assigning {_aodVisual}");
             }
             if (EnemiesInRange.Count > 0)
             {
