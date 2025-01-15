@@ -1,9 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Responsible for enabling and disabling buttons to allow buying towers.
+/// </summary>
 public class PurchaseTower : MonoBehaviour
 {
     [SerializeField] BaseTower towerType;

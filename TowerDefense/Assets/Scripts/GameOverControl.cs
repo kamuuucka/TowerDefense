@@ -1,9 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Responsible for enabling specific panel at the end of the game. Also manages the buttons on the last screen.
+/// </summary>
 public class GameOverControl : MonoBehaviour
 {
    [SerializeField] private GameObject gameOverPanel;

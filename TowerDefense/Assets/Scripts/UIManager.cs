@@ -1,8 +1,9 @@
-using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
+/// <summary>
+/// Takes care of updating the UI elements.
+/// </summary>
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private TMP_Text lives;

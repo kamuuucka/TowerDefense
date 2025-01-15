@@ -1,7 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Responsible for changing the speed of the game.
+/// </summary>
 public class GameSpeedControl : MonoBehaviour
 {
     [SerializeField] private float maximumSpeed = 5f;

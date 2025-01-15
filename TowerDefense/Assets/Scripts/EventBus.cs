@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
+/// <summary>
+/// Class responsible for the connections between all of the other classes.
+/// </summary>
 public static class EventBus
 {
     private static readonly Dictionary<string, Delegate> EventTable = new Dictionary<string, Delegate>();

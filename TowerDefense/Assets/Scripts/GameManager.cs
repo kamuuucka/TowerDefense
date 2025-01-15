@@ -1,34 +1,43 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Manages whole game.
+/// </summary>
 public class GameManager : MonoBehaviour
 {
+    #region Exposed Variables
+
     [SerializeField] private Transform endPoint;
     [SerializeField] private GameData data;
     [SerializeField] private UnityEvent onBuildOn;
     [SerializeField] private UnityEvent onBuildOff;
+    
+    #endregion
+    
+    #region Private Variables
 
     private int _lives;
     private int _money;
     private int _buildTime;
-    private int _roundTime;
     private int _currentTime;
     private int _wave;
     private Coroutine _timerCoroutine;
     private int _enemiesToKill;
-
     private WaveData _activeWave;
+    
+    #endregion
 
+    #region Public Variables
+    
     public int Lives => _lives;
     public int Money => _money;
     public int Waves => _wave;
-
     [HideInInspector] public bool IsBuild;
 
+    #endregion
     public static GameManager Instance { get; private set; }
 
     private void Awake()
