@@ -38,6 +38,7 @@ public class TowerPlacer : MonoBehaviour
         {
             BaseTower newTower = Instantiate(_selectedTower, parent.position, Quaternion.identity);
             newTower.transform.SetParent(parent);
+            parent.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
             EventBus.Publish("MoneyUpdate", -_selectedTower.Cost);
             _selectedTower = null;
         }

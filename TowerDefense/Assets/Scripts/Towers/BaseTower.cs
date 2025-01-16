@@ -179,6 +179,7 @@ public abstract class BaseTower : MonoBehaviour, ITowers
 
     public void DeleteTower()
     {
+        transform.parent.gameObject.layer = LayerMask.NameToLayer("Grass");
         Destroy(gameObject);
     }
     

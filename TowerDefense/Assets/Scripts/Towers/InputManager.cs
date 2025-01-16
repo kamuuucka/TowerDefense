@@ -40,6 +40,7 @@ public class InputManager : MonoBehaviour
         
         if(Physics.Raycast(_ray, out _hit))
         {
+            Debug.Log(_hit.transform.gameObject.name);
             if (_hit.transform != null && _pointer == null)
             {
                 _pointer = Instantiate(pointerPrefab, _hit.transform.position, Quaternion.identity);
