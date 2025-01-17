@@ -305,7 +305,7 @@ MonoBehaviour:
   deleteBtn: {fileID: 2170703561639051846}
   upgradeCost: 25
   damageUpgrade: 0.5
-  intervalUpgrade: 0.05
+  intervalUpgrade: 0.1
   upgradeBtn: {fileID: 7873668357158224802}
   scaleJump: 0.05
 --- !u!65 &6950072983013525944

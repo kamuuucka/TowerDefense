@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
@@ -71,6 +72,7 @@ public class Enemy : MonoBehaviour
         if (!(_currentHealth <= 0) || transform == null) return;
         _currentHealth = 0;
         Instantiate(moneyUI, transform.position, Quaternion.identity);
+        moneyUI.GetComponentInChildren<TMP_Text>().text = money.ToString();
         DestroyEnemy();
     }
 

@@ -71,7 +71,6 @@ public class DebuffTower : BaseTower
                 float elapsed = 0f;
                 
                 TriggerAoDAttack(transform.position);
-                Debug.Log("Triggered AoD attack at the start of the duration");
 
                 while (elapsed < attackDuration)
                 {
@@ -81,15 +80,12 @@ public class DebuffTower : BaseTower
 
                     yield return null; 
                 }
-
-                // Phase 2: Cooldown
-                Debug.Log("Entering cooldown phase");
+                
                 ProcessEnemies(StopAttack);
                 yield return new WaitForSeconds(cooldownDuration);
             }
             else
             {
-                // No enemies in range, wait before checking again
                 yield return new WaitForSeconds(AttackInterval);
             }
         }
