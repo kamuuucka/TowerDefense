@@ -35,7 +35,7 @@ public class UIManager : MonoBehaviour
 
     private void UpdateWaves(int waveNumber)
     {
-        waves.text = $"Wave: {waveNumber + 1}";
+        if (waves != null) waves.text = $"Wave: {waveNumber + 1}";
     }
 
     private void UpdateTime(int amount)
@@ -45,16 +45,16 @@ public class UIManager : MonoBehaviour
 
         string niceTime = $"{minutes:0}:{seconds:00}";
 
-        time.text = $"Time left: {niceTime}";
+        if (time != null) time.text = $"{niceTime}";
     }
 
     private void UpdateMoney(int amount)
     {
-        money.text = $"Money: {amount}";
+        if (money != null) money.text = $"{amount}";
     }
 
     private void UpdateLives(int amount)
     {
-        lives.text = $"Lives: {amount}";
+        if (lives != null) lives.text = $"Lives: {amount}";
     }
 }

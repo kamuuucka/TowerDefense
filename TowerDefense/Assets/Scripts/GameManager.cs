@@ -132,10 +132,25 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            onBuildOff?.Invoke();
-            EventBus.Publish("ModeSwitch", false);
-            EventBus.Publish("StartEnemySpawner", _activeWave);
+            StartWave();
         }
+    }
+
+    /// <summary>
+    /// Invokes events on the start of the wave.
+    /// Publishes all the events required for the wave to start.
+    /// </summary>
+    private void StartWave()
+    {
+        onBuildOff?.Invoke();
+        EventBus.Publish("ModeSwitch", false);
+        EventBus.Publish("StartEnemySpawner", _activeWave);
+        EventBus.Publish("OnMoneyChanged", _money);
+    }
+
+    public void DebugStartWave()
+    {
+        StartWave();
     }
 
     /// <summary>

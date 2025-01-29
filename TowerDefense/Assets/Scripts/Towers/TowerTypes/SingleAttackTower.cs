@@ -12,13 +12,13 @@ public class SingleAttackTower : BaseTower
     protected override void OnEnable()
     {
         base.OnEnable();
-        EventBus.Subscribe<Enemy>("EnemyDeath", StopAttacking);
+        EventBus.Subscribe<Enemy>("EnemyDeath", StopAttack);
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
-        EventBus.Unsubscribe<Enemy>("EnemyDeath", StopAttacking);
+        EventBus.Unsubscribe<Enemy>("EnemyDeath", StopAttack);
     }
 
     private void Update()
@@ -50,17 +50,16 @@ public class SingleAttackTower : BaseTower
     /// Stop the attack coroutine.
     /// </summary>
     /// <param name="enemy">Enemy that will stop being attacked.</param>
-    private void StopAttacking(Enemy enemy)
+    public override void StopAttack(Enemy enemy)
     {
-        if (!IsAttacking) return;
+        base.StopAttack(enemy);
         EnemiesInRange.Remove(enemy);
         if (_attackCoroutine == null) return;
         StopCoroutine(_attackCoroutine);
-        StopAttack(enemy);
         _attackCoroutine = null;
-
+        _attackedEnemy = null;
     }
-    
+
     /// <summary>
     /// Create projectile and set up a target for it.
     /// </summary>
@@ -83,7 +82,10 @@ public class SingleAttackTower : BaseTower
     {
         while (true)
         {
-            CreateProjectile(_attackedEnemy.transform);
+            if (_attackedEnemy != null)
+            {
+                CreateProjectile(_attackedEnemy.transform);
+            }
             yield return new WaitForSeconds(AttackInterval);
         }
     }

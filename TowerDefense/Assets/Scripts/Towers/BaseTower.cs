@@ -92,7 +92,7 @@ public abstract class BaseTower : MonoBehaviour, ITowers
             {
                 deleteBtn.gameObject.SetActive(true);
             }
-            else
+            else if (!GameManager.Instance.IsBuild)
             {
                 upgradeBtn.gameObject.SetActive(false);
                 deleteBtn.gameObject.SetActive(false);
@@ -174,6 +174,7 @@ public abstract class BaseTower : MonoBehaviour, ITowers
         if (enemy != null)
         {
             EnemiesInRange.Remove(enemy);
+            StopAttack(enemy);
         }
     }
 
